@@ -39,6 +39,11 @@ public class Word {
 		return censoredWord;
 	}
 
+	public boolean isMatched() {
+		censoredWord.equals(word);	
+	}
+	
+	
 	private void randomizeWord() {
 		Random rand = new Random();
 		int randNum = rand.nextInt(words.length);
@@ -69,6 +74,27 @@ public class Word {
 		censoredWord = String.valueOf(censoredWordArray);
 	}
 
+	public boolean displayEndMessage() {		
+		if (isMatched() || getRemaining() == 0) {
+			if (matched) {
+				System.out.println("You have won yhe game, the word was " + censoredWord);
+			} else {
+				System.out.println("You lost, word is " + word);
+			}
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public void displayLetterMessage() {		
+			if (isFound()) {
+				System.out.println("Correct. " + censoredWord);
+			} else {
+				System.out.println("Incorrect 1 life lost. " + getRemaining() + " remaining. the current word is " + censoredWord);
+			}
+	}
+	
 	private void validate() {
 		//TODO - validate character
 	}

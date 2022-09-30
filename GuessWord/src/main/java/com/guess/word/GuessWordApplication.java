@@ -21,26 +21,17 @@ public class GuessWordApplication {
 			char letterGuessed = kb.nextLine().charAt(0);
 
 			word.processLetter(letterGuessed);
-			String censoredWord = word.getCensoredWord();
-					
-			boolean matched = censoredWord.equals(word.getWord());
-			if (matched || word.getRemaining() == 0) {
-				if (matched) {
-					System.out.println("You have won yhe game, the word was " + censoredWord);
-				} else {
-					System.out.println("You lost, word is " + word.getWord());
-
-				}
+			if (word.displayEndMessage()) {
 				word = new Word();
 			} else {
-				if (word.isFound()) {
-					System.out.println("Correct. " + censoredWord);
-				} else {
-					System.out.println("Incorrect 1 life lost. " + word.getRemaining() + " remaining. the current word is " + censoredWord);
-				}
+				word.displayLetterMessage();
 			}
 
 		}
+	}
+	
+	private void static playGame() {
+		
 	}
 	
 	private static boolean playAgain() {
