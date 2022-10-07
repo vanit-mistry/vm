@@ -1,101 +1,116 @@
 package com.guess.word;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class Word {
 	private final static int LIMIT_GUESS = 3;
 	private String[] words = { "cow", "deer", "cat", "dog" };
-	
+
 	private String censoredWord = "";
-	private String word = "";
+	private String secretWord = "";
 	private boolean found = false;
 	private int countGuess = 0;
-	private String[] inputLetters = {};  //TODO - save entered letters
 	
-	public Word() 
-	{
+	private Character guessedLetter;
+	private List<Character> inputLetters;
+
+
+	public Word() {
+		init();
+	}
+
+	private void init() {
 		countGuess = 0;
 		randomizeWord();
-	}
-	
-	public boolean isFound() {
-		return found;
+		inputLetters = new ArrayList<>();
 	}
 
-	public int getCountGuess() {
-		return countGuess;
-	}
-
-	public int getRemaining()
-	{
+	public int getRemaining() {
 		return LIMIT_GUESS - countGuess;
-	}
-	
-	public String getWord() {
-		return word;
-	}
-
-	public String getCensoredWord() {
-		return censoredWord;
 	}
 
 	public boolean isMatched() {
-		censoredWord.equals(word);	
+		return censoredWord.equals(secretWord);
 	}
-	
-	
+
 	private void randomizeWord() {
 		Random rand = new Random();
 		int randNum = rand.nextInt(words.length);
-		word = words[randNum];
-		for (int i = 0; i < word.length(); i++) {
+		secretWord = words[randNum];
+		for (int i = 0; i < secretWord.length(); i++) {
 			censoredWord = censoredWord + "*";
 		}
 
 		System.out.println("Guess the word " + censoredWord);
 	}
 
-	public void processLetter(char letter) {
+	public void processLetter() {
 		found = false;
-		char[] wordArray = word.toCharArray();
+		char[] wordArray = secretWord.toCharArray();
 		char[] censoredWordArray = censoredWord.toCharArray();
 		for (int i = 0; i < wordArray.length; i++) {
 			char ichar = wordArray[i];
-			if (letter == ichar) {
+			if (guessedLetter.charAt(0) == ichar) {
 				censoredWordArray[i] = ichar;
 				found = true;
 			}
 		}
-		
+
 		if (!found) {
 			countGuess++;
 		}
-		
+
 		censoredWord = String.valueOf(censoredWordArray);
 	}
 
-	public boolean displayEndMessage() {		
-		if (isMatched() || getRemaining() == 0) {
-			if (matched) {
-				System.out.println("You have won yhe game, the word was " + censoredWord);
-			} else {
-				System.out.println("You lost, word is " + word);
-			}
-			return true;
+	public void displayEndMessage() {
+		if (isMatched()) {
+			System.out.println("You have won the game, the word was " + censoredWord);
+		} else {
+			System.out.println("You lost, word is " + secretWord);
+		}
+	}
+
+	public void displayLetterMessage() {
+		if (found) {
+			System.out.println("Correct. " + censoredWord);
+		} else {
+			System.out.println(
+					"Incorrect 1 life lost. " + getRemaining() + " remaining. the current word is " + censoredWord);
+		}
+	}
+
+	public boolean isValid(String userInput) {
+		if (userInput.isBlank()) {
+			System.out.println("Please enter a letter");
+			return false;
 		}
 		
-		return false;
+		
+//		if (userInput < 'a' || userInput > 'z') {
+//			System.out.println("Please enter a lowercase letter");
+//			return false;
+//		}
+		
+		if (inputLetters.contains(userInput.charAt(0))) {
+			System.out.println("Duplicate, Please enter a lowercase letter");
+			return false;
+		}
+		
+		guessedLetter = userInput.charAt(0);
+		inputLetters.add(guessedLetter);
+		
+		return true;
 	}
-	
-	public void displayLetterMessage() {		
-			if (isFound()) {
-				System.out.println("Correct. " + censoredWord);
-			} else {
-				System.out.println("Incorrect 1 life lost. " + getRemaining() + " remaining. the current word is " + censoredWord);
-			}
-	}
-	
-	private void validate() {
-		//TODO - validate character
+
+	public void displayMessage() {
+		if (isMatched() || getRemaining() == 0) {
+			displayEndMessage();
+			init();
+		} else {
+			displayLetterMessage();
+		}
 	}
 }

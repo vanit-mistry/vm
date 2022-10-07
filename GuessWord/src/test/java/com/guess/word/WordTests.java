@@ -10,20 +10,8 @@ public class WordTests {
 	@Test
 	void randomiseWordTest() {
 		word = new Word();
-		assertThat(word.getWord() != null);
-		assertThat(word.getCountGuess() == 0);
 		assertThat(word.getRemaining() == 3);
 	}
 	
-	@Test
-	void processLetterTest() {
-		word = new Word();
-		word.processLetter('a');
-		if (word.isFound()) {
-			assertThat(word.getRemaining() == 3);
-		} else {
-			assertThat(word.getRemaining() == 2);
-		}
-		
-	}
+
 }

@@ -7,35 +7,29 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class GuessWordApplication {
-	
+
 	public static void main(String[] args) {
 		SpringApplication.run(GuessWordApplication.class, args);
 
 		System.out.println("Welcome to Guess the word!");
+		System.out.println("Guess the word in 3 goes.");
+		System.out.println("Only lowercase letters allowed.");
 
+		playGame();
+
+	}
+
+	private static void playGame() {
 		Word word = new Word();
 
 		Scanner kb = new Scanner(System.in);
 		while (true) {
 
-			char letterGuessed = kb.nextLine().charAt(0);
-
-			word.processLetter(letterGuessed);
-			if (word.displayEndMessage()) {
-				word = new Word();
-			} else {
-				word.displayLetterMessage();
+			if (word.isValid(kb.next())) {
+				word.processLetter();
+				word.displayMessage();	
 			}
-
 		}
 	}
-	
-	private void static playGame() {
-		
-	}
-	
-	private static boolean playAgain() {
-		//TODO - allow user to play again.
-		return true;
-	}
+
 }
