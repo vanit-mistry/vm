@@ -26,6 +26,7 @@ public class GuessWordApplication {
 		while (true) {
 
 			if (word.isValid(kb.next())) {
+				word.saveLetter();
 				word.processLetter();
 				word.displayMessage();	
 			}

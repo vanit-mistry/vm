@@ -52,7 +52,7 @@ public class Word {
 		char[] censoredWordArray = censoredWord.toCharArray();
 		for (int i = 0; i < wordArray.length; i++) {
 			char ichar = wordArray[i];
-			if (guessedLetter.charAt(0) == ichar) {
+			if (guessedLetter.equals(ichar)) {
 				censoredWordArray[i] = ichar;
 				found = true;
 			}
@@ -112,5 +112,9 @@ public class Word {
 		} else {
 			displayLetterMessage();
 		}
+	}
+
+	public void saveLetter() {
+		inputLetters.add(guessedLetter);		
 	}
 }
